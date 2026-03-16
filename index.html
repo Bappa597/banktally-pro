@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BankTally Pro — Plans & License</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #07090f;
+  --s1:      #0d1018;
+  --s2:      #131720;
+  --s3:      #1a1f2e;
+  --border:  #1e2535;
+  --border2: #252d40;
+  --green:   #34d399;
+  --blue:    #38bdf8;
+  --amber:   #fbbf24;
+  --red:     #f87171;
+  --text:    #e8edf5;
+  --muted:   #8492b0;
+  --dim:     #4a5570;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Background ── */
+.bg-grid {
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(52,211,153,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(52,211,153,.03) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+.bg-blob1 {
+  position:fixed;top:-300px;left:-200px;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(52,211,153,.06) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.bg-blob2 {
+  position:fixed;bottom:-200px;right:-200px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(56,189,248,.05) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Layout ── */
+.page {position:relative;z-index:1;max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+
+/* ── Hero ── */
+.hero {
+  text-align:center;
+  margin-bottom:56px;
+  animation:fadeUp .7s ease both;
+}
+.logo-pill {
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--s2);border:1px solid var(--border2);
+  border-radius:50px;padding:8px 20px 8px 10px;
+  margin-bottom:28px;
+}
+.logo-icon{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+}
+.logo-name{
+  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;
+  color:var(--text);letter-spacing:.5px;
+}
+.hero h1{
+  font-family:'Space Mono',monospace;font-size:clamp(24px,5vw,38px);
+  font-weight:700;line-height:1.15;margin-bottom:14px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--green),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{font-size:15px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto;}
+
+/* ── Step indicator ── */
+.steps-bar{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-bottom:48px;
+  animation:fadeUp .7s .1s ease both;
+}
+.step{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex:1;max-width:160px;
+}
+.step-circle{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid var(--border2);background:var(--s2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--dim);transition:all .3s;
+}
+.step.active .step-circle{
+  border-color:var(--green);background:rgba(52,211,153,.15);color:var(--green);
+}
+.step.done .step-circle{
+  border-color:var(--green);background:var(--green);color:#07090f;
+}
+.step-label{font-size:11px;color:var(--dim);font-weight:500;transition:color .3s;}
+.step.active .step-label,.step.done .step-label{color:var(--green);}
+.step-line{flex:1;height:1px;background:var(--border2);max-width:60px;transition:background .3s;}
+.step-line.done{background:var(--green);}
+
+/* ── Sections ── */
+.section{display:none;}
+.section.active{display:block;animation:fadeUp .5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Plan Cards ── */
+.plans-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+@media(max-width:600px){.plans-grid{grid-template-columns:1fr;}}
+
+.plan-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:18px;padding:28px;position:relative;overflow:hidden;
+  cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;
+}
+.plan-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),transparent);opacity:0;transition:opacity .2s;
+}
+.plan-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.plan-card:hover::before{opacity:1;}
+.plan-card.featured{border-color:rgba(52,211,153,.3);}
+.plan-card.featured::before{opacity:1;}
+
+.popular-badge{
+  position:absolute;top:16px;right:16px;
+  background:linear-gradient(135deg,var(--green),#22c45e);
+  color:#07090f;font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:50px;letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.discount-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);
+  color:var(--amber);font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:50px;margin-bottom:16px;
+}
+.plan-title{font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.plan-sub{font-size:12px;color:var(--muted);margin-bottom:20px;}
+
+.select-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:block;}
+.plan-select{
+  width:100%;padding:10px 14px;
+  background:var(--s3);border:1px solid var(--border2);
+  border-radius:10px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  appearance:none;-webkit-appearance:none;outline:none;
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238492b0' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:16px;
+  padding-right:36px;cursor:pointer;transition:border-color .2s;
+}
+.plan-select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(52,211,153,.12);}
+.plan-select option{background:var(--s2);}
+
+.price-row{display:flex;align-items:flex-end;gap:10px;margin:18px 0 20px;}
+.price-original{font-size:14px;color:var(--dim);text-decoration:line-through;padding-bottom:3px;}
+.price-current{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--green);line-height:1;}
+.price-period{font-size:12px;color:var(--muted);padding-bottom:5px;}
+
+.btn-pay{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,var(--green),#22c45e);
+  border:none;border-radius:10px;
+  color:#07090f;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-pay:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(52,211,153,.3);}
+.btn-pay:active{transform:translateY(0);}
+.btn-pay-outline{
+  background:transparent;border:1px solid rgba(52,211,153,.4);color:var(--green);
+}
+.btn-pay-outline:hover{background:rgba(52,211,153,.08);box-shadow:0 6px 20px rgba(52,211,153,.15);}
+
+/* ── QR Payment Section ── */
+.pay-card{
+  max-width:480px;margin:0 auto;
+  background:var(--s2);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;
+}
+.pay-card-top{
+  background:linear-gradient(135deg,rgba(52,211,153,.1),rgba(56,189,248,.05));
+  border-bottom:1px solid var(--border);padding:24px;text-align:center;
+}
+.pay-plan-tag{
+  display:inline-block;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.25);
+  color:var(--green);font-size:12px;font-weight:600;padding:4px 14px;border-radius:50px;margin-bottom:8px;
+}
+.pay-amount-big{
+  font-family:'Space Mono',monospace;font-size:42px;font-weight:700;
+  color:var(--text);line-height:1.1;
+}
+.pay-card-body{padding:28px;text-align:center;}
+.qr-wrap{
+  width:200px;height:200px;margin:0 auto 20px;
+  background:white;border-radius:12px;padding:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+.qr-wrap img{width:100%;height:100%;border-radius:6px;}
+.upi-id{
+  font-family:'Space Mono',monospace;font-size:13px;
+  background:var(--s3);border:1px solid var(--border2);
+  border-radius:8px;padding:10px 16px;color:var(--green);
+  margin-bottom:16px;display:inline-block;
+}
+.pay-hint{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.btn-done{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,var(--green),#22c45e);
+  border:none;border-radius:12px;
+  color:#07090f;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+}
+.btn-done:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(52,211,153,.35);}
+
+/* ── License Form ── */
+.form-card{
+  max-width:520px;margin:0 auto;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:20px;padding:32px;position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),var(--blue),transparent);
+}
+.form-info-box{
+  background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);
+  border-radius:12px;padding:14px 16px;margin-bottom:24px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.form-info-box .icon{font-size:20px;margin-top:1px;}
+.form-info-box p{font-size:13px;color:var(--muted);line-height:1.6;}
+.form-info-box strong{color:var(--green);}
+
+.field{margin-bottom:18px;}
+.field label{
+  display:block;font-size:11px;font-weight:600;
+  color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;
+}
+.field input,.field select{
+  width:100%;background:var(--s1);border:1px solid var(--border2);
+  border-radius:10px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 16px;
+  outline:none;transition:border-color .2s,box-shadow .2s;
+  appearance:none;-webkit-appearance:none;
+}
+.field input::placeholder{color:var(--dim);}
+.field input:focus,.field select:focus{
+  border-color:var(--green);box-shadow:0 0 0 3px rgba(52,211,153,.12);
+}
+.field-readonly{
+  background:rgba(52,211,153,.06)!important;
+  border-color:rgba(52,211,153,.2)!important;
+  color:var(--green)!important;font-weight:600;
+}
+.field select{
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238492b0' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 14px center;background-size:16px;
+  padding-right:40px;cursor:pointer;
+}
+.field select option{background:var(--s2);}
+
+.btn-submit{
+  width:100%;padding:14px;margin-top:8px;
+  background:linear-gradient(135deg,var(--green),#22c45e);
+  border:none;border-radius:12px;
+  color:#07090f;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+  position:relative;overflow:hidden;
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(52,211,153,.35);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+.error-msg{
+  display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);
+  border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);
+  margin-top:12px;text-align:center;
+}
+
+/* ── Success ── */
+.success-section{
+  max-width:480px;margin:0 auto;text-align:center;padding:40px 20px;
+}
+.success-circle{
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(52,211,153,.15);border:2px solid rgba(52,211,153,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;margin:0 auto 24px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success-section h2{
+  font-family:'Space Mono',monospace;font-size:22px;color:var(--green);margin-bottom:12px;
+}
+.success-section p{font-size:15px;color:var(--muted);line-height:1.8;}
+.success-email{
+  margin:20px 0;background:var(--s2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 20px;
+  font-family:'Space Mono',monospace;font-size:13px;color:var(--blue);
+}
+.success-note{
+  background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.15);
+  border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.7;
+}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;margin-top:40px;font-size:12px;color:var(--dim);line-height:2;
+}
+.footer a{color:var(--green);text-decoration:none;}
+
+/* ── Spinner ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(0,0,0,.2);border-top-color:#07090f;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:6px;
+}
+
+/* ── Section headings ── */
+.sec-heading{text-align:center;margin-bottom:32px;}
+.sec-heading h2{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;margin-bottom:8px;}
+.sec-heading p{font-size:14px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-blob1"></div>
+<div class="bg-blob2"></div>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="logo-pill">
+      <div class="logo-icon">🏦</div>
+      <span class="logo-name">BankTally Pro</span>
+    </div>
+    <h1>Choose Your Plan &<br><em>Get Licensed Instantly</em></h1>
+    <p>Select a plan, pay via UPI, fill in your details —<br>license key arrives in your email within minutes.</p>
+  </div>
+
+  <!-- Step Bar -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step active" id="step1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Choose Plan</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Pay</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Submit Details</div>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="step" id="step4">
+      <div class="step-circle">4</div>
+      <div class="step-label">Get Key</div>
+    </div>
+  </div>
+
+  <!-- ─────────── STEP 1: Plans ─────────── -->
+  <div class="section active" id="sec-plans">
+    <div class="sec-heading">
+      <h2>Select Your Plan</h2>
+      <p>All plans include full access to BankTally Pro</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <!-- Starter -->
+      <div class="plan-card">
+        <div class="discount-pill">⚡ 50% OFF</div>
+        <div class="plan-title">Starter Plan</div>
+        <div class="plan-sub">Monthly subscription — flexible duration</div>
+
+        <span class="select-label">Select Duration</span>
+        <select class="plan-select" id="starter-dur" onchange="updateStarterPrice()">
+          <option value="1">1 Month</option>
+          <option value="2">2 Months</option>
+          <option value="3">3 Months</option>
+          <option value="4">4 Months</option>
+          <option value="5">5 Months</option>
+          <option value="6">6 Months</option>
+          <option value="7">7 Months</option>
+          <option value="8">8 Months</option>
+          <option value="9">9 Months</option>
+          <option value="10">10 Months</option>
+          <option value="11">11 Months</option>
+        </select>
+
+        <div class="price-row">
+          <span class="price-original" id="s-orig">₹1,000</span>
+          <span class="price-current" id="s-price">₹500</span>
+          <span class="price-period">/mo</span>
+        </div>
+
+        <button class="btn-pay btn-pay-outline" onclick="goToPay('Starter')">
+          💳 Pay Now
+        </button>
+      </div>
+
+      <!-- Professional -->
+      <div class="plan-card featured">
+        <div class="popular-badge">Most Popular</div>
+        <div class="discount-pill">⚡ 60% OFF</div>
+        <div class="plan-title">Professional Plan</div>
+        <div class="plan-sub">Annual subscription — best value</div>
+
+        <span class="select-label">Select Duration</span>
+        <select class="plan-select" id="pro-dur" onchange="updateProPrice()">
+          <option value="1">1 Year</option>
+          <option value="2">2 Years</option>
+        </select>
+
+        <div class="price-row">
+          <span class="price-original" id="p-orig">₹12,000</span>
+          <span class="price-current" id="p-price">₹4,800</span>
+          <span class="price-period">/yr</span>
+        </div>
+
+        <button class="btn-pay" onclick="goToPay('Professional')">
+          💳 Pay Now
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Renew link -->
+    <p style="text-align:center;margin-top:24px;font-size:13px;color:var(--muted);">
+      Existing user? &nbsp;
+      <a href="#" onclick="goToRenew()" style="color:var(--blue);font-weight:600;">Renew your license →</a>
+    </p>
+  </div>
+
+  <!-- ─────────── STEP 2: Payment ─────────── -->
+  <div class="section" id="sec-pay">
+    <div class="sec-heading">
+      <h2>Complete Payment</h2>
+      <p>Scan the QR code and pay via any UPI app</p>
+    </div>
+
+    <div class="pay-card">
+      <div class="pay-card-top">
+        <div class="pay-plan-tag" id="pay-plan-tag">Starter Plan</div>
+        <div class="pay-amount-big" id="pay-amount-big">₹500</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;" id="pay-plan-sub">1 Month</div>
+      </div>
+      <div class="pay-card-body">
+        <div class="qr-wrap">
+          <img id="qr-img" src="" alt="UPI QR Code">
+        </div>
+        <div class="upi-id">bappadityakhatua@ybl</div>
+        <div class="pay-hint">
+          Open GPay, PhonePe, Paytm or any UPI app<br>
+          Scan this QR code to complete payment<br>
+          <strong style="color:var(--amber);">Note your Transaction ID / UTR after payment</strong>
+        </div>
+        <button class="btn-done" onclick="goToForm()">
+          ✅ Payment Done — Enter Details
+        </button>
+        <button onclick="goBack('sec-plans',1)" style="width:100%;margin-top:10px;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;">← Back to Plans</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── STEP 3: License Form ─────────── -->
+  <div class="section" id="sec-form">
+    <div class="sec-heading">
+      <h2>Submit Your Details</h2>
+      <p>Enter your details exactly — your name will be embedded in the license key</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-info-box">
+        <span class="icon">ℹ️</span>
+        <p>Your license key is generated using your <strong>exact name</strong>. Please enter it carefully — it must match when activating the app.</p>
+      </div>
+
+      <!-- Plan (auto-filled, readonly) -->
+      <div class="field">
+        <label>Selected Plan</label>
+        <input type="text" id="f-plan-display" class="field-readonly" readonly>
+      </div>
+
+      <!-- Name -->
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="f-name" placeholder="Enter your full name exactly">
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label>Email Address *</label>
+        <input type="email" id="f-email" placeholder="License key will be sent here">
+      </div>
+
+      <!-- Transaction ID -->
+      <div class="field">
+        <label>UPI Transaction ID / UTR *</label>
+        <input type="text" id="f-txn" placeholder="e.g. 415234567890 or UTR number">
+      </div>
+
+      <!-- Request Type (hidden, auto) -->
+      <div class="field" id="req-type-field" style="display:none;">
+        <label>Request Type</label>
+        <select id="f-reqtype">
+          <option value="New License">New License</option>
+          <option value="Renew">Renew</option>
+        </select>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+        🚀 Submit License Request
+      </button>
+      <div class="error-msg" id="errorMsg">Something went wrong. Please try again.</div>
+
+      <button onclick="goBack('sec-pay',2)" style="width:100%;margin-top:10px;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;">← Back to Payment</button>
+    </div>
+  </div>
+
+  <!-- ─────────── STEP 4: Success ─────────── -->
+  <div class="section" id="sec-success">
+    <div class="success-section">
+      <div class="success-circle">🎉</div>
+      <h2>Request Submitted!</h2>
+      <p>Your license request has been received successfully.</p>
+      <div class="success-email" id="success-email-display"></div>
+      <div class="success-note">
+        ✅ Our team will verify your payment<br>
+        📧 License key will be sent to your email within a few minutes<br>
+        🔑 Enter the key in BankTally Pro → License → Activate
+      </div>
+      <button onclick="resetAll()" style="margin-top:24px;padding:12px 28px;background:var(--s2);border:1px solid var(--border2);border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;">← Back to Plans</button>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- Footer -->
+<div class="footer">
+  Need help? &nbsp;<a href="mailto:onlinegstseva@gmail.com">onlinegstseva@gmail.com</a><br>
+  &copy; 2025 BankTally Pro. All rights reserved.
+</div>
+
+<script>
+// ── Config ──
+const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScA31bxGrjhNVoOvlbpNjl7rQay1r9GqyjyQ9wqpgK7WfZt4Q/formResponse";
+const ENTRY = {
+  name   : "entry.539330596",
+  email  : "entry.451443433",
+  plan   : "entry.1725107928",
+  payref : "entry.682975417",
+  reqtype: "entry.1559018722",
+};
+const UPI_ID = "bappadityakhatua@ybl";
+
+// Plan map → Google Form plan names
+const PLAN_FORM_NAMES = {
+  "Starter-1" : "Starter 1 Month",
+  "Starter-2" : "Starter 2 Months",
+  "Starter-3" : "Starter 3 Months",
+  "Starter-4" : "Starter 4 Months",
+  "Starter-5" : "Starter 5 Months",
+  "Starter-6" : "Starter 6 Months",
+  "Starter-7" : "Starter 7 Months",
+  "Starter-8" : "Starter 8 Months",
+  "Starter-9" : "Starter 9 Months",
+  "Starter-10": "Starter 10 Months",
+  "Starter-11": "Starter 11 Months",
+  "Professional-1": "Professional 1 Year",
+  "Professional-2": "Professional 2 Years",
+};
+
+// State
+let selectedPlan = '';
+let selectedAmount = 0;
+let selectedPlanLabel = '';
+
+// ── Price calculation ──
+function updateStarterPrice() {
+  const qty = +document.getElementById('starter-dur').value;
+  document.getElementById('s-price').textContent = '₹' + (500*qty).toLocaleString('en-IN');
+  document.getElementById('s-orig').textContent  = '₹' + (1000*qty).toLocaleString('en-IN');
+}
+function updateProPrice() {
+  const qty = +document.getElementById('pro-dur').value;
+  document.getElementById('p-price').textContent = '₹' + (4800*qty).toLocaleString('en-IN');
+  document.getElementById('p-orig').textContent  = '₹' + (12000*qty).toLocaleString('en-IN');
+}
+
+// ── Go to Pay ──
+function goToPay(type) {
+  let qty, amount, label, planKey;
+  if (type === 'Starter') {
+    qty = +document.getElementById('starter-dur').value;
+    amount = 500 * qty;
+    label = `${qty} Month${qty>1?'s':''}`;
+    planKey = `Starter-${qty}`;
+  } else {
+    qty = +document.getElementById('pro-dur').value;
+    amount = 4800 * qty;
+    label = `${qty} Year${qty>1?'s':''}`;
+    planKey = `Professional-${qty}`;
+  }
+
+  selectedPlan = planKey;
+  selectedAmount = amount;
+  selectedPlanLabel = PLAN_FORM_NAMES[planKey] || planKey;
+
+  // Generate QR
+  const upiUri = `upi://pay?pa=${UPI_ID}&pn=BankTallyPro&am=${amount}&cu=INR&tn=${encodeURIComponent(selectedPlanLabel+' License')}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
+  document.getElementById('qr-img').src = qrUrl;
+
+  // Update pay card
+  document.getElementById('pay-plan-tag').textContent = type + ' Plan';
+  document.getElementById('pay-amount-big').textContent = '₹' + amount.toLocaleString('en-IN');
+  document.getElementById('pay-plan-sub').textContent = label;
+
+  showSection('sec-pay', 2);
+}
+
+// ── Renew flow ──
+function goToRenew() {
+  selectedPlan = 'renew';
+  selectedPlanLabel = 'Renew';
+  document.getElementById('req-type-field').style.display = 'block';
+  document.getElementById('f-reqtype').value = 'Renew';
+  document.getElementById('f-plan-display').value = 'Renew License';
+  showSection('sec-form', 3);
+}
+
+// ── Go to Form ──
+function goToForm() {
+  document.getElementById('f-plan-display').value = selectedPlanLabel;
+  showSection('sec-form', 3);
+}
+
+// ── Submit Form ──
+function submitForm() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const txn   = document.getElementById('f-txn').value.trim();
+  const reqtype = document.getElementById('f-reqtype').value;
+
+  // Validate
+  if (!name || !email || !txn) {
+    ['f-name','f-email','f-txn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'var(--red)';
+        el.addEventListener('input', () => el.style.borderColor='', {once:true});
+      }
+    });
+    return;
+  }
+  if (!email.includes('@')) {
+    document.getElementById('f-email').style.borderColor = 'var(--red)';
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting…';
+  document.getElementById('errorMsg').style.display = 'none';
+
+  const fd = new FormData();
+  fd.append(ENTRY.name,    name);
+  fd.append(ENTRY.email,   email);
+  fd.append(ENTRY.plan,    selectedPlanLabel);
+  fd.append(ENTRY.payref,  txn);
+  fd.append(ENTRY.reqtype, reqtype);
+
+  fetch(FORM_ACTION, {method:'POST', mode:'no-cors', body:fd})
+    .then(() => {
+      document.getElementById('success-email-display').textContent = '📧 ' + email;
+      showSection('sec-success', 4);
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = '🚀 Submit License Request';
+      document.getElementById('errorMsg').style.display = 'block';
+    });
+}
+
+// ── Navigation ──
+function showSection(id, stepNum) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateSteps(stepNum);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack(id, stepNum) { showSection(id, stepNum); }
+
+function resetAll() {
+  selectedPlan = ''; selectedAmount = 0; selectedPlanLabel = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-txn').value = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').innerHTML = '🚀 Submit License Request';
+  document.getElementById('req-type-field').style.display = 'none';
+  document.getElementById('f-reqtype').value = 'New License';
+  showSection('sec-plans', 1);
+}
+
+function updateSteps(active) {
+  for (let i = 1; i <= 4; i++) {
+    const s = document.getElementById('step'+i);
+    s.classList.remove('active','done');
+    if (i < active) s.classList.add('done');
+    else if (i === active) s.classList.add('active');
+  }
+  for (let i = 1; i <= 3; i++) {
+    const l = document.getElementById('line'+i);
+    l.classList.toggle('done', i < active);
+  }
+}
+
+// ── Enter key ──
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && document.getElementById('sec-form').classList.contains('active')) submitForm();
+});
+</script>
+</body>
+</html>
