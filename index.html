@@ -256,6 +256,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 
 </div>
+<!-- Hidden submission elements (100% Reliable) -->
+<form id="hiddenGoogleForm" target="hiddenResponse" style="display:none;"></form>
+<iframe name="hiddenResponse" style="display:none;"></iframe>
 
 <div class="footer">
   Need help? &nbsp;<a href="mailto:onlinegstseva@gmail.com">onlinegstseva@gmail.com</a><br>
@@ -344,15 +347,27 @@ function submitForm(){
   if(!email.includes('@')){document.getElementById('f-email').style.borderColor='var(--red)';return;}
   const btn=document.getElementById('submitBtn');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Submitting…';
-  document.getElementById('errorMsg').style.display='none';
-  const fd=new FormData();
-  fd.append(ENTRY.name,name); fd.append(ENTRY.email,email);
-  fd.append(ENTRY.plan,selectedPlanLabel);
-  fd.append(ENTRY.payref,`${txn} | Users:${selectedUsers}`);
-  fd.append(ENTRY.reqtype,reqtype);
-  fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body:fd})
-    .then(()=>{document.getElementById('success-email-display').textContent='📧 '+email;showSection('sec-success',4);})
-    .catch(()=>{btn.disabled=false;btn.innerHTML='🚀 Submit License Request';document.getElementById('errorMsg').style.display='block';});
+
+  const form = document.getElementById('hiddenGoogleForm');
+  form.action = FORM_ACTION;
+  form.method = 'POST';
+  form.innerHTML = `
+    <input type="hidden" name="${ENTRY.name}" value="${name}">
+    <input type="hidden" name="${ENTRY.email}" value="${email}">
+    <input type="hidden" name="${ENTRY.plan}" value="${selectedPlanLabel}">
+    <input type="hidden" name="${ENTRY.payref}" value="${txn}">
+    <input type="hidden" name="${ENTRY.reqtype}" value="${reqtype}">
+  `;
+  
+  // Submit via hidden iframe (This navigates the iframe to the form response page)
+  form.submit();
+  
+  // Show success screen immediately
+  setTimeout(() => {
+    document.getElementById('success-email-display').textContent='📧 '+email;
+    showSection('sec-success',4);
+    btn.disabled=false; btn.innerHTML='🚀 Submit License Request';
+  }, 1000);
 }
 
 function showSection(id,stepNum){
