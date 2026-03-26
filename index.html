@@ -347,28 +347,28 @@ function submitForm(){
   if(!email.includes('@')){document.getElementById('f-email').style.borderColor='var(--red)';return;}
   const btn=document.getElementById('submitBtn');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Submitting…';
+  document.getElementById('errorMsg').style.display='none';
 
-  // Build a pre-filled Google Form URL and open it in a new tab.
-  // This is the 100% guaranteed method - it uses Google's own pre-fill system.
-  const base = 'https://docs.google.com/forms/d/e/1FAIpQLScA31bxGrjhNVoOvlbpNjl7rQay1r9GqyjyQ9wqpgK7WfZt4Q/viewform';
-  const params = new URLSearchParams({
-    [`${ENTRY.name}`]: name,
-    [`${ENTRY.email}`]: email,
-    [`${ENTRY.plan}`]: selectedPlanLabel,
-    [`${ENTRY.payref}`]: txn,
-    [`${ENTRY.reqtype}`]: reqtype,
-    'usp': 'pp_url'
-  });
-  
-  // Open the pre-filled form in a new tab so user can click Submit once
-  window.open(`${base}?${params.toString()}`, '_blank');
-  
-  // Show our success screen
-  setTimeout(() => {
-    document.getElementById('success-email-display').textContent='📧 '+email;
-    showSection('sec-success',4);
-    btn.disabled=false; btn.innerHTML='🚀 Submit License Request';
-  }, 800);
+  // URLSearchParams sends as application/x-www-form-urlencoded
+  // This is the CORRECT format that Google Forms accepts silently in the background
+  const body = new URLSearchParams();
+  body.append(ENTRY.name, name);
+  body.append(ENTRY.email, email);
+  body.append(ENTRY.plan, selectedPlanLabel);
+  body.append(ENTRY.payref, txn);
+  body.append(ENTRY.reqtype, reqtype);
+
+  fetch(FORM_ACTION, {method:'POST', mode:'no-cors', body: body})
+    .then(() => {
+      document.getElementById('success-email-display').textContent='📧 '+email;
+      showSection('sec-success',4);
+      btn.disabled=false; btn.innerHTML='🚀 Submit License Request';
+    })
+    .catch(() => {
+      btn.disabled=false;
+      btn.innerHTML='🚀 Submit License Request';
+      document.getElementById('errorMsg').style.display='block';
+    });
 }
 
 function showSection(id,stepNum){
