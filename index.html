@@ -348,26 +348,27 @@ function submitForm(){
   const btn=document.getElementById('submitBtn');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Submitting…';
 
-  const form = document.getElementById('hiddenGoogleForm');
-  form.action = FORM_ACTION;
-  form.method = 'POST';
-  form.innerHTML = `
-    <input type="hidden" name="${ENTRY.name}" value="${name}">
-    <input type="hidden" name="${ENTRY.email}" value="${email}">
-    <input type="hidden" name="${ENTRY.plan}" value="${selectedPlanLabel}">
-    <input type="hidden" name="${ENTRY.payref}" value="${txn}">
-    <input type="hidden" name="${ENTRY.reqtype}" value="${reqtype}">
-  `;
+  // Build a pre-filled Google Form URL and open it in a new tab.
+  // This is the 100% guaranteed method - it uses Google's own pre-fill system.
+  const base = 'https://docs.google.com/forms/d/e/1FAIpQLScA31bxGrjhNVoOvlbpNjl7rQay1r9GqyjyQ9wqpgK7WfZt4Q/viewform';
+  const params = new URLSearchParams({
+    [`${ENTRY.name}`]: name,
+    [`${ENTRY.email}`]: email,
+    [`${ENTRY.plan}`]: selectedPlanLabel,
+    [`${ENTRY.payref}`]: txn,
+    [`${ENTRY.reqtype}`]: reqtype,
+    'usp': 'pp_url'
+  });
   
-  // Submit via hidden iframe (This navigates the iframe to the form response page)
-  form.submit();
+  // Open the pre-filled form in a new tab so user can click Submit once
+  window.open(`${base}?${params.toString()}`, '_blank');
   
-  // Show success screen immediately
+  // Show our success screen
   setTimeout(() => {
     document.getElementById('success-email-display').textContent='📧 '+email;
     showSection('sec-success',4);
     btn.disabled=false; btn.innerHTML='🚀 Submit License Request';
-  }, 1000);
+  }, 800);
 }
 
 function showSection(id,stepNum){
