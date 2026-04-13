@@ -7,12 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#07090f;--s1:#0d1018;--s2:#131720;--s3:#1a1f2e;--border:#1e2535;--border2:#252d40;--green:#34d399;--blue:#38bdf8;--amber:#fbbf24;--red:#f87171;--text:#e8edf5;--muted:#8492b0;--dim:#4a5570;}
+:root[data-theme="light"]{--bg:#fdfdfd;--s1:#ffffff;--s2:#ffffff;--s3:#f4f5f7;--border:#e5e7eb;--border2:#d1d5db;--green:#04825d;--blue:#0284c7;--amber:#d97706;--red:#dc2626;--text:#111827;--muted:#4b5563;--dim:#9ca3af;}
+:root[data-theme="light"] .plan-card{box-shadow:0 12px 35px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);}
+:root[data-theme="light"] .theme-toggle{box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid rgba(0,0,0,0.06);}
+:root[data-theme="light"] .bg-watermark-wrap{opacity:0.08;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(52,211,153,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,.03) 1px,transparent 1px);background-size:48px 48px;}
 .bg-blob1{position:fixed;top:-300px;left:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(52,211,153,.06) 0%,transparent 65%);pointer-events:none;z-index:0;}
 .bg-blob2{position:fixed;bottom:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(56,189,248,.05) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.bg-watermark-wrap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-4deg);z-index:0;pointer-events:none;user-select:none;display:flex;align-items:center;justify-content:center;gap:3vw;opacity:0.04;white-space:nowrap;width:100vw;}
+.bg-watermark-logo{height:clamp(90px,18vw,300px);width:auto;object-fit:contain;filter:blur(1px) grayscale(50%);}
+.bg-watermark-text{font-size:clamp(110px,21vw,350px);font-family:'Space Mono',monospace;font-weight:800;background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0;}
+.theme-toggle{position:absolute;top:20px;right:20px;background:var(--s2);border:1px solid var(--border2);color:var(--text);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:transform 0.2s,background 0.2s;z-index:10;}
+.theme-toggle:hover{transform:scale(1.1);}
 .page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:48px 20px 80px;}
 .hero{text-align:center;margin-bottom:48px;animation:fadeUp .7s ease both;}
 .logo-pill{display:inline-flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--border2);border-radius:50px;padding:8px 20px 8px 10px;margin-bottom:28px;}
@@ -96,7 +105,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </style>
 </head>
 <body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"><span id="theme-icon">☀️</span></button>
 <div class="bg-grid"></div><div class="bg-blob1"></div><div class="bg-blob2"></div>
+<div class="bg-watermark-wrap">
+  <img src="tally_logo.png" class="bg-watermark-logo" alt="">
+  <div class="bg-watermark-text">BANKTALLY</div>
+</div>
 <div class="page">
 
   <div class="hero">
@@ -396,6 +410,16 @@ function updateSteps(active){
   for(let i=1;i<=3;i++){document.getElementById('line'+i).classList.toggle('done',i<active);}
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('sec-form').classList.contains('active'))submitForm();});
+function toggleTheme() {
+    const html = document.documentElement;
+    if (html.getAttribute('data-theme') === 'light') {
+        html.removeAttribute('data-theme');
+        document.getElementById('theme-icon').textContent = '☀️';
+    } else {
+        html.setAttribute('data-theme', 'light');
+        document.getElementById('theme-icon').textContent = '🌙';
+    }
+}
 </script>
 </body>
 </html>
