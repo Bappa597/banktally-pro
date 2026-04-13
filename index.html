@@ -51,6 +51,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .price-breakdown-row{display:flex;justify-content:space-between;color:var(--muted);padding:3px 0;}
 .price-breakdown-row.total{color:var(--text);font-weight:700;border-top:1px solid var(--border);margin-top:6px;padding-top:8px;font-size:15px;}
 .price-breakdown-row.total span:last-child{color:var(--green);}
+.strike-price{text-decoration:line-through;color:var(--dim);font-size:0.85em;margin-right:6px;font-weight:500;}
 .btn-pay{width:100%;padding:12px;background:linear-gradient(135deg,var(--green),#22c45e);border:none;border-radius:10px;color:#07090f;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
 .btn-pay:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(52,211,153,.3);}
 .btn-pay-outline{background:transparent;border:1px solid rgba(52,211,153,.4);color:var(--green);}
@@ -150,9 +151,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <option value="10">10 Users (+₹300/user/month)</option>
         </select>
         <div class="price-breakdown">
-          <div class="price-breakdown-row"><span>Base price</span><span id="s-base">₹500</span></div>
-          <div class="price-breakdown-row" id="s-extra-row" style="display:none;"><span id="s-extra-label">Extra users</span><span id="s-extra">₹0</span></div>
-          <div class="price-breakdown-row total"><span>Total</span><span id="s-price">₹500</span></div>
+          <div class="price-breakdown-row"><span>Base price</span><span><span class="strike-price" id="s-base-orig">₹1,000</span><span id="s-base">₹500</span></span></div>
+          <div class="price-breakdown-row" id="s-extra-row" style="display:none;"><span id="s-extra-label">Extra users</span><span><span class="strike-price" id="s-extra-orig">₹0</span><span id="s-extra">₹0</span></span></div>
+          <div class="price-breakdown-row total"><span>Total</span><span><span class="strike-price" id="s-price-orig" style="color:var(--dim);">₹1,000</span><span id="s-price">₹500</span></span></div>
         </div>
         <button class="btn-pay btn-pay-outline" onclick="goToPay('Starter')">💳 Pay Now</button>
       </div>
@@ -181,9 +182,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <option value="10">10 Users (+₹3,600/user/year)</option>
         </select>
         <div class="price-breakdown">
-          <div class="price-breakdown-row"><span>Base price</span><span id="p-base">₹4,800</span></div>
-          <div class="price-breakdown-row" id="p-extra-row" style="display:none;"><span id="p-extra-label">Extra users</span><span id="p-extra">₹0</span></div>
-          <div class="price-breakdown-row total"><span>Total</span><span id="p-price">₹4,800</span></div>
+          <div class="price-breakdown-row"><span>Base price</span><span><span class="strike-price" id="p-base-orig">₹12,000</span><span id="p-base">₹4,800</span></span></div>
+          <div class="price-breakdown-row" id="p-extra-row" style="display:none;"><span id="p-extra-label">Extra users</span><span><span class="strike-price" id="p-extra-orig">₹0</span><span id="p-extra">₹0</span></span></div>
+          <div class="price-breakdown-row total"><span>Total</span><span><span class="strike-price" id="p-price-orig" style="color:var(--dim);">₹12,000</span><span id="p-price">₹4,800</span></span></div>
         </div>
         <button class="btn-pay" onclick="goToPay('Professional')">💳 Pay Now</button>
       </div>
@@ -277,10 +278,13 @@ function updateStarterPrice(){
   const m=+document.getElementById('starter-dur').value;
   const u=+document.getElementById('starter-users').value;
   const base=BASE_S*m, extra=u>1?EXTRA_S*(u-1)*m:0, total=base+extra;
+  const origBase=1000*m, origExtra=u>1?600*(u-1)*m:0, origTotal=origBase+origExtra;
+  document.getElementById('s-base-orig').textContent=fmt(origBase);
   document.getElementById('s-base').textContent=fmt(base);
+  document.getElementById('s-price-orig').textContent=fmt(origTotal);
   document.getElementById('s-price').textContent=fmt(total);
   const er=document.getElementById('s-extra-row');
-  if(u>1){er.style.display='flex';document.getElementById('s-extra-label').textContent=`${u-1} extra user${u>2?'s':''} × ${m} month${m>1?'s':''}`;document.getElementById('s-extra').textContent=fmt(extra);}
+  if(u>1){er.style.display='flex';document.getElementById('s-extra-label').textContent=`${u-1} extra user${u>2?'s':''} × ${m} month${m>1?'s':''}`;document.getElementById('s-extra-orig').textContent=fmt(origExtra);document.getElementById('s-extra').textContent=fmt(extra);}
   else{er.style.display='none';}
 }
 
@@ -288,10 +292,13 @@ function updateProPrice(){
   const y=+document.getElementById('pro-dur').value;
   const u=+document.getElementById('pro-users').value;
   const base=BASE_P*y, extra=u>1?EXTRA_P*(u-1)*y:0, total=base+extra;
+  const origBase=12000*y, origExtra=u>1?9000*(u-1)*y:0, origTotal=origBase+origExtra;
+  document.getElementById('p-base-orig').textContent=fmt(origBase);
   document.getElementById('p-base').textContent=fmt(base);
+  document.getElementById('p-price-orig').textContent=fmt(origTotal);
   document.getElementById('p-price').textContent=fmt(total);
   const er=document.getElementById('p-extra-row');
-  if(u>1){er.style.display='flex';document.getElementById('p-extra-label').textContent=`${u-1} extra user${u>2?'s':''} × ${y} year${y>1?'s':''}`;document.getElementById('p-extra').textContent=fmt(extra);}
+  if(u>1){er.style.display='flex';document.getElementById('p-extra-label').textContent=`${u-1} extra user${u>2?'s':''} × ${y} year${y>1?'s':''}`;document.getElementById('p-extra-orig').textContent=fmt(origExtra);document.getElementById('p-extra').textContent=fmt(extra);}
   else{er.style.display='none';}
 }
 
