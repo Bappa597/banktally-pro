@@ -2,7 +2,8 @@
   "version": "14.1.0",
   "update_file_id": "1EiymHR-QztbUKYGXC_0XnEE1NSveSpzw",
   "download_url": "https://drive.google.com/uc?export=download&id=1EiymHR-QztbUKYGXC_0XnEE1NSveSpzw",
-  "changes": "নতুন অনেক ফিচার যোগ হয়েছে। <br><br>👉 <b><a href='https://drive.google.com/file/d/1EiymHR-QztbUKYGXC_0XnEE1NSveSpzw/view?usp=drive_link' target='_blank' style='color:#3b82f6; text-decoration:underline;'>Download Update from Google Drive (Click Here)</a></b>",
+  "changes": "Single-device login enforcement, Voucher auto-pick logic, UI enhancements.",
+  "notes": "নতুন ভার্সন (14.1.0) চলে এসেছে!<br><br>👉 <a href='https://drive.google.com/file/d/1EiymHR-QztbUKYGXC_0XnEE1NSveSpzw/view?usp=drive_link' target='_blank' style='color:#3b82f6; text-decoration:underline; font-weight:bold; font-size:14px;'>এখানে ক্লিক করে Google Drive থেকে নতুন আপডেটটি ডাউনলোড করুন</a>",
   "urgent": false,
   "message": ""
 }
